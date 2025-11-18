@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyberpunk Profile Card</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Oxanium:wght@200..800&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Oxanium', monospace;
+            background: #000;
+            color: #ff3333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: background 0.5s ease;
+        }
+
+        body.white-mode {
+            background: #fff;
+            color: #333;
+        }
+
+        /* Static Effect */
+        .static-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 0, 0, 0.03) 0px,
+                    rgba(255, 0, 0, 0.03) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        .scan-lines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(255, 0, 0, 0.05) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .matrix-code {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Orbitron', monospace;
+            font-size: 14px;
+            color: rgba(255, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .code-column {
+            position: absolute;
+            top: -100%;
+            width: 20px;
+            text-align: center;
+            animation: fall linear infinite;
+        }
+
+        /* Arasaka Logo */
+        .arasaka-logo {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 80px;
+            height: 80px;
+            z-index: 10;
+            opacity: 0.8;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+        }
+
+        .logo-text {
+            position: fixed;
+            top: 105px;
+            right: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+            letter-spacing: 2px;
+            z-index: 10;
+        }
+
+        body.white-mode .arasaka-logo {
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        }
+
+        body.white-mode .logo-text {
+            color: #333;
+            text-shadow: none;
+        }
+
+        /* Profile Card */
+        #profileCard {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #ff0000;
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px;
+            max-width: 400px;
+            box-shadow: 0 0 20px #ff0000 inset, 0 0 25px #ff3300;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            transition: all 0.5s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        body.white-mode #profileCard {
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) inset, 0 0 25px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        #profileCard:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px #ff3300 inset, 0 0 40px #ff0000;
+        }
+
+        body.white-mode #profileCard:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.2) inset, 0 0 40px rgba(0, 0, 0, 0.3);
+        }
+
+        #profileImage img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 2px solid #ff0000;
+            box-shadow: 0 0 15px #ff0000;
+            margin-bottom: 15px;
+            transition: all 0.5s ease;
+        }
+
+        body.white-mode #profileImage img {
+            border: 2px solid #333;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        #profileName h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000, 0 0 25px #ff3333;
+            margin: 15px 0 5px;
+            animation: flicker 2s infinite alternate;
+            transition: all 0.5s ease;
+        }
+
+        body.white-mode #profileName h2 {
+            color: #333;
+            text-shadow: none;
+            animation: none;
+        }
+
+        #profileRole p {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            color: #ff4444;
+            text-shadow: 0 0 8px #ff0000;
+            margin: 5px 0 15px;
+            transition: all 0.5s ease;
+        }
+
+        body.white-mode #profileRole p {
+            color: #555;
+            text-shadow: none;
+        }
+
+        #profileBio p {
+            color: #ff6666;
+            margin: 15px 0;
+            transition: all 0.5s ease;
+        }
+
+        body.white-mode #profileBio p {
+            color: #666;
+        }
+
+        /* Status indicator */
+        #statusIndicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #0f0;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #0f0;
+            transition: all 0.5s ease;
+        }
+
+        .status-active #statusIndicator {
+            background-color: #0f0;
+            box-shadow: 0 0 8px #0f0;
+        }
+
+        .status-inactive #statusIndicator {
+            background-color: #f00;
+            box-shadow: 0 0 8px #f00;
+        }
+
+        body.white-mode .status-active #statusIndicator {
+            background-color: #0a0;
+            box-shadow: 0 0 8px #0a0;
+        }
+
+        body.white-mode .status-inactive #statusIndicator {
+            background-color: #a00;
+            box-shadow: 0 0 8px #a00;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: rgba(255, 0, 0, 0.15);
+            color: #ff0000;
+            border: 2px solid #ff0000;
+            font-family: 'Orbitron', sans-serif;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 20px #ff0000 inset;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255,0,0,0.3);
+            transform: scale(1.1);
+        }
+
+        body.white-mode button {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+            border: 2px solid #333;
+            text-shadow: none;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1) inset;
+        }
+
+        body.white-mode button:hover {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Animations */
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity:1; }
+            20%, 22%, 24%, 55% { opacity:0.4; }
+        }
+
+        @keyframes fall {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            #profileCard {
+                margin: 20px;
+                padding: 20px;
+            }
+            
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            button {
+                width: 200px;
+            }
+            
+            .arasaka-logo {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo-text {
+                top: 85px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Static Effect -->
+    <div class="static-overlay"></div>
+    <div class="scan-lines"></div>
+    <div class="matrix-code" id="matrixCode"></div>
+    
+    <!-- Arasaka Logo -->
+    <svg class="arasaka-logo" viewBox="0 0 100 100">
+        <defs>
+            <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#ff0000" />
+                <stop offset="100%" stop-color="#990000" />
+            </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#redGradient)" stroke-width="3"/>
+        <path d="M35,30 L65,30 L75,50 L65,70 L35,70 L25,50 Z" fill="none" stroke="url(#redGradient)" stroke-width="3"/>
+        <circle cx="50" cy="50" r="15" fill="none" stroke="url(#redGradient)" stroke-width="2"/>
+        <line x1="50" y1="35" x2="50" y2="65" stroke="url(#redGradient)" stroke-width="2"/>
+        <line x1="35" y1="50" x2="65" y2="50" stroke="url(#redGradient)" stroke-width="2"/>
+    </svg>
+    <div class="logo-text">ARASAKA</div>
+
+    <!-- Profile Card -->
+    <div id="profileCard">
+        <div id="profileImage">
+            <img src="https://via.placeholder.com/150" alt="Profile Picture">
+        </div>
+        
+        <div id="profileName">
+            <h2>John Doe</h2>
+        </div>
+
+        <div id="profileRole">
+            <p>Software Developer</p>
+        </div>
+
+        <div id="profileBio">
+            <p>Passionate about coding and learning new technologies.</p>
+        </div>
+        
+        <div id="profileStatus" class="status-active">
+            <p><span id="statusIndicator"></span> Active</p>
+        </div>
+    </div>
+
+    <div class="buttons">
+        <button id="updateNameBtn">Update Name</button>
+        <button id="updateRoleBtn">Update Role</button>
+        <button id="toggleStatusBtn">Toggle Active Status</button>
+    </div>
+
+    <script>
+        // Create matrix code effect
+        function createMatrixCode() {
+            const matrixCode = document.getElementById('matrixCode');
+            const chars = "01010101010101010101010101010101";
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'code-column';
+                column.style.left = `${i * 20}px`;
+                column.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                column.style.animationDelay = `${Math.random() * 5}s`;
+                
+                // Add characters to column
+                for (let j = 0; j < 30; j++) {
+                    const char = document.createElement('div');
+                    char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
+                    column.appendChild(char);
+                }
+                
+                matrixCode.appendChild(column);
+            }
+        }
+
+        // Task 1: Update Name and Role
+        document.getElementById('updateNameBtn').addEventListener('click', function() {
+            const newName = prompt('Enter new name:');
+            if (newName && newName.trim() !== '') {
+                document.querySelector('#profileName h2').textContent = newName;
+            }
+        });
+
+        document.getElementById('updateRoleBtn').addEventListener('click', function() {
+            const newRole = prompt('Enter new role:');
+            if (newRole && newRole.trim() !== '') {
+                document.querySelector('#profileRole p').textContent = newRole;
+            }
+        });
+
+        // Toggle Status functionality
+        document.getElementById('toggleStatusBtn').addEventListener('click', function() {
+            const statusElement = document.getElementById('profileStatus');
+            const body = document.body;
+            
+            if (statusElement.classList.contains('status-active')) {
+                statusElement.classList.remove('status-active');
+                statusElement.classList.add('status-inactive');
+                statusElement.querySelector('p').innerHTML = '<span id="statusIndicator"></span> Inactive';
+                body.classList.add('white-mode');
+            } else {
+                statusElement.classList.remove('status-inactive');
+                statusElement.classList.add('status-active');
+                statusElement.querySelector('p').innerHTML = '<span id="statusIndicator"></span> Active';
+                body.classList.remove('white-mode');
+            }
+        });
+
+        // Initialize matrix code
+        createMatrixCode();
+    </script>
+</body>
+</html>
