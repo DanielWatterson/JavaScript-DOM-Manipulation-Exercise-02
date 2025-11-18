@@ -1,64 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cyberpunk Profile Card</title>
-    <link rel="stylesheet" href="DPC_Style.css">
-</head>
-<body>
-    <!-- Static Effect -->
-    <div class="static-overlay"></div>
-    <div class="scan-lines"></div>
-    <div class="matrix-code" id="matrixCode"></div>
-    
-    <!-- Arasaka Logo -->
-    <svg class="arasaka-logo" viewBox="0 0 100 100">
-        <defs>
-            <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ff0000" />
-                <stop offset="100%" stop-color="#990000" />
-            </linearGradient>
-        </defs>
-        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#redGradient)" stroke-width="3"/>
-        <path d="M35,30 L65,30 L75,50 L65,70 L35,70 L25,50 Z" fill="none" stroke="url(#redGradient)" stroke-width="3"/>
-        <circle cx="50" cy="50" r="15" fill="none" stroke="url(#redGradient)" stroke-width="2"/>
-        <line x1="50" y1="35" x2="50" y2="65" stroke="url(#redGradient)" stroke-width="2"/>
-        <line x1="35" y1="50" x2="65" y2="50" stroke="url(#redGradient)" stroke-width="2"/>
-    </svg>
-    <div class="logo-text">ARASAKA</div>
-
-    <!-- Profile Card -->
-    <div id="profileCard">
-        <div id="profileImage">
-            <img src="https://via.placeholder.com/150" alt="Profile Picture">
-        </div>
-        
-        <div id="profileName">
-            <h2>John Doe</h2>
-        </div>
-
-        <div id="profileRole">
-            <p>Software Developer</p>
-        </div>
-
-        <div id="profileBio">
-            <p>Passionate about coding and learning new technologies.</p>
-        </div>
-        
-        <div id="profileStatus" class="status-active">
-            <p><span id="statusIndicator"></span> Active</p>
-        </div>
-    </div>
-
-    <div class="buttons">
-        <button id="updateNameBtn">Update Name</button>
-        <button id="updateRoleBtn">Update Role</button>
-        <button id="toggleStatusBtn">Toggle Active Status</button>
-    </div>
-
-    <script>
-        // Create matrix code effect
+        // This code is for the Matrix Effect.
         function createMatrixCode() {
             const matrixCode = document.getElementById('matrixCode');
             const chars = "01010101010101010101010101010101";
@@ -70,8 +10,7 @@
                 column.style.left = `${i * 20}px`;
                 column.style.animationDuration = `${Math.random() * 5 + 5}s`;
                 column.style.animationDelay = `${Math.random() * 5}s`;
-                
-                // Add characters to column
+    
                 for (let j = 0; j < 30; j++) {
                     const char = document.createElement('div');
                     char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
@@ -82,7 +21,7 @@
             }
         }
 
-        // Task 1: Update Name and Role
+        // This is to Update Name and Role.
         document.getElementById('updateNameBtn').addEventListener('click', function() {
             const newName = prompt('Enter new name:');
             if (newName && newName.trim() !== '') {
@@ -97,7 +36,7 @@
             }
         });
 
-        // Toggle Status functionality
+        // Toggles Status functionality (Active/Inactive Button)
         document.getElementById('toggleStatusBtn').addEventListener('click', function() {
             const statusElement = document.getElementById('profileStatus');
             const body = document.body;
@@ -115,8 +54,5 @@
             }
         });
 
-        // Initialize matrix code
+        // This is to initialize matrix code
         createMatrixCode();
-    </script>
-</body>
-</html>
