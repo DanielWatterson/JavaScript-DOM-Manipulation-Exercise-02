@@ -53,6 +53,34 @@
                 body.classList.remove('white-mode');
             }
         });
+        
+        const changeImageBtn = document.getElementById('changeImageBtn');
+        const profileImage = document.querySelector('#profileImage img');
 
-        // This is to initialize matrix code
-        createMatrixCode();
+        changeImageBtn.addEventListener('click', () => {
+            const newUrl = prompt('Enter the new image URL:');
+
+            if (!newUrl || newUrl.trim() === '') {
+                alert('URL cannot be empty.');
+                return;
+            }
+
+            const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            const extension = newUrl.split('.').pop().toLowerCase();
+
+            if (!validExtensions.includes(extension)) {
+                alert('Invalid image URL. Please enter a URL ending with jpg, png, gif, or webp.');
+                return;
+            }
+
+            // Try loading the image first
+            const imgTest = new Image();
+            imgTest.onload = () => {
+                profileImage.src = newUrl.trim(); // <-- Actually set the new image
+                alert('Profile image updated successfully!'); // optional feedback
+            };
+            imgTest.onerror = () => {
+                alert('Could not load the image. Please check the URL.');
+            };
+            imgTest.src = newUrl.trim();
+        });
