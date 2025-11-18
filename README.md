@@ -4,7 +4,7 @@ Dominic Peck – Red/Black Cyberpunk Design
 # Dominic Peck - Files
 
 - **Dominic Peck**
-  - index.html
+  - Dynamic Profile Card.html
   - DPC_Style.css
   - DPC_Script.js
 
