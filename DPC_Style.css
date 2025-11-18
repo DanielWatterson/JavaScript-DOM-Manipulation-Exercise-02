@@ -274,7 +274,27 @@
             background: rgba(0, 0, 0, 0.1);
         }
 
-        /* Animations */
+        .arasaka-logo {
+            position: fixed;
+            top: 10px;
+            right: 20px;
+            width: 300px;
+            height: auto;  /* change so it keeps aspect ratio rather than forcing width+height */
+            z-index: 10;
+            opacity: 0.9;
+            filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.7));
+        }
+
+        @media (max-width: 768px) {
+            .arasaka-logo {
+                width: 120px;
+            }
+        }
+
+        body.white-mode .arasaka-logo {
+            filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.5));
+        }
+
         @keyframes flicker {
             0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity:1; }
             20%, 22%, 24%, 55% { opacity:0.4; }
