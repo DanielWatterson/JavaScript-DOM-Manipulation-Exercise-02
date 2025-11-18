@@ -53,7 +53,7 @@
                 body.classList.remove('white-mode');
             }
         });
-        
+
         const changeImageBtn = document.getElementById('changeImageBtn');
         const profileImage = document.querySelector('#profileImage img');
 
@@ -76,8 +76,8 @@
             // Try loading the image first
             const imgTest = new Image();
             imgTest.onload = () => {
-                profileImage.src = newUrl.trim(); // <-- Actually set the new image
-                alert('Profile image updated successfully!'); // optional feedback
+                profileImage.src = newUrl.trim(); 
+                alert('Profile image updated successfully!'); 
             };
             imgTest.onerror = () => {
                 alert('Could not load the image. Please check the URL.');
